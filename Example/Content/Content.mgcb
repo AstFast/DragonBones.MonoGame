@@ -1,0 +1,28 @@
+
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:DesktopGL
+/config:
+/profile:Reach
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+
+#---------------------------------- Content ---------------------------------#
+
+# Begin Item
+/importer:TextureImporter
+/processor:TextureProcessor
+/build:library/weapon_1000_tex.png
+
+# End Item
+
+# Begin Item
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/build:Font.spritefont
+
+# End Item

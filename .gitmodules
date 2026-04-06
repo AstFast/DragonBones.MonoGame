@@ -1,0 +1,3 @@
+[submodule "DragonBones Runtime"]
+	path = DragonBones.MonoGame/DragonBones
+	url = https://github.com/AstFast/DragonBonesCSharp.git

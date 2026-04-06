@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="DragonBones.MonoGame/DragonBones.MonoGame.csproj" />
+  <Project Path="Example/Example.csproj" Id="a672a048-d017-4079-8a19-52c4d18fe057" />
+</Solution>
