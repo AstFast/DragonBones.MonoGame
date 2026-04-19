@@ -43,7 +43,6 @@ namespace DragonBones.MonoGame
         protected override Slot _BuildSlot(BuildArmaturePackage dataPackage, SlotData slotData, Armature armature)
         {
             var slot = BaseObject.BorrowObject<MonoGameSlot>();
-            // 使用slot本身作为rawDisplay和meshDisplay，因为我们不需要单独的显示对象
             slot.Init(slotData, armature, slot, slot);
             return slot;
         }

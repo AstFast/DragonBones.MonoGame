@@ -15,3 +15,7 @@ Run it.
 Don't forget runtime.[It](https://github.com/AstFast/DragonBonesCSharp.git).
 
 ![Example](Example/Example.PNG)
+
+### Note
+
+This project utilizes AI

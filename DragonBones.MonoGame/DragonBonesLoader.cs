@@ -14,25 +14,17 @@ namespace DragonBones.MonoGame
         {
             string jsonPath = Path.ChangeExtension(path, ".json");
             string dbbinPath = Path.ChangeExtension(path, ".dbbin");
-            
-            // 尝试多种路径查找资源文件
             List<string> possiblePaths = new List<string>
             {
-                // 1. 直接使用content.RootDirectory
                 Path.Combine(content.RootDirectory, jsonPath),
                 Path.Combine(content.RootDirectory, dbbinPath),
-                // 2. 当前工作目录的Content子目录
                 Path.Combine(Directory.GetCurrentDirectory(), "Content", jsonPath),
                 Path.Combine(Directory.GetCurrentDirectory(), "Content", dbbinPath),
-                // 3. 当前工作目录的上一级目录的Content子目录
                 Path.Combine(Directory.GetCurrentDirectory(), "..", "Content", jsonPath),
                 Path.Combine(Directory.GetCurrentDirectory(), "..", "Content", dbbinPath),
-                // 4. 当前工作目录的上两级目录的Content子目录
                 Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "Content", jsonPath),
                 Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "Content", dbbinPath)
             };
-
-            // 检查是否存在JSON文件
             string foundJsonPath = null;
             foreach (var possiblePath in possiblePaths)
             {
@@ -42,8 +34,6 @@ namespace DragonBones.MonoGame
                     break;
                 }
             }
-
-            // 检查是否存在DBBIN文件
             string foundBinaryPath = null;
             foreach (var possiblePath in possiblePaths)
             {
@@ -97,17 +87,11 @@ namespace DragonBones.MonoGame
         public static TextureAtlasData LoadTextureAtlasData(ContentManager content, string path, Texture2D texture, MonoGameFactory factory, string name = null, float scale = 1.0f)
         {
             string jsonPath = Path.ChangeExtension(path, ".json");
-            
-            // 尝试多种路径查找资源文件
             List<string> possiblePaths = new List<string>
             {
-                // 1. 直接使用content.RootDirectory
                 Path.Combine(content.RootDirectory, jsonPath),
-                // 2. 当前工作目录的Content子目录
                 Path.Combine(Directory.GetCurrentDirectory(), "Content", jsonPath),
-                // 3. 当前工作目录的上一级目录的Content子目录
                 Path.Combine(Directory.GetCurrentDirectory(), "..", "Content", jsonPath),
-                // 4. 当前工作目录的上两级目录的Content子目录
                 Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "Content", jsonPath)
             };
 
