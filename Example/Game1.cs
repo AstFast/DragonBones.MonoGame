@@ -51,8 +51,8 @@ namespace DragonBonesMonoGameExample
             try
             {
                 var texture = Content.Load<Texture2D>("library/weapon_1000_tex");
-                var dragonBonesData = DragonBonesLoader.LoadDragonBonesData(Content, "library/weapon_1000_ske", _factory, "weapon_1000");
-                var textureAtlasData = DragonBonesLoader.LoadTextureAtlasData(Content, "library/weapon_1000_tex", texture, _factory, "weapon_1000");
+                var dragonBonesData = DragonBonesLoader.LoadDragonBonesData(Content, "library/weapon_1000_ske.json", _factory, "weapon_1000");
+                var textureAtlasData = DragonBonesLoader.LoadTextureAtlasData(Content, "library/weapon_1000_tex.json", texture, _factory, "weapon_1000");
                 
                 _armature = _factory.BuildArmature("weapon_1005d", "weapon_1000") as MonoGameArmature;
                 

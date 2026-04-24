@@ -2,124 +2,81 @@ using System.IO;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
-using DragonBones;
-using System.Text.Json;
 using System.Text.Json.Nodes;
+using System;
 
 namespace DragonBones.MonoGame
 {
     public static class DragonBonesLoader
     {
-        public static DragonBonesData LoadDragonBonesData(ContentManager content, string path, MonoGameFactory factory, string name = null, float scale = 1.0f)
+        public static DragonBonesData LoadDragonBonesData(ContentManager content, string filePath, MonoGameFactory factory, string name = null, float scale = 1.0f)
         {
-            string jsonPath = Path.ChangeExtension(path, ".json");
-            string dbbinPath = Path.ChangeExtension(path, ".dbbin");
-            List<string> possiblePaths = new List<string>
+            string fillpath = Path.Combine(content.RootDirectory, filePath);
+            if (!File.Exists(fillpath))
             {
-                Path.Combine(content.RootDirectory, jsonPath),
-                Path.Combine(content.RootDirectory, dbbinPath),
-                Path.Combine(Directory.GetCurrentDirectory(), "Content", jsonPath),
-                Path.Combine(Directory.GetCurrentDirectory(), "Content", dbbinPath),
-                Path.Combine(Directory.GetCurrentDirectory(), "..", "Content", jsonPath),
-                Path.Combine(Directory.GetCurrentDirectory(), "..", "Content", dbbinPath),
-                Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "Content", jsonPath),
-                Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "Content", dbbinPath)
-            };
-            string foundJsonPath = null;
-            foreach (var possiblePath in possiblePaths)
-            {
-                if (possiblePath.EndsWith(".json") && File.Exists(possiblePath))
-                {
-                    foundJsonPath = possiblePath;
-                    break;
-                }
+                throw new FileNotFoundException($"DragonBones data file not found: {filePath}");
             }
-            string foundBinaryPath = null;
-            foreach (var possiblePath in possiblePaths)
+            string extension = Path.GetExtension(filePath).ToLower();
+            if (extension == ".json")
             {
-                if (possiblePath.EndsWith(".dbbin") && File.Exists(possiblePath))
-                {
-                    foundBinaryPath = possiblePath;
-                    break;
-                }
+                return LoadDragonBonesDataJson(fillpath, factory, name, scale);
             }
-
-            if (foundBinaryPath != null)
+            else if (extension == ".dbbin")
             {
-                return LoadDragonBonesDataBinary(foundBinaryPath, factory, name, scale);
-            }
-            else if (foundJsonPath != null)
-            {
-                return LoadDragonBonesDataJson(foundJsonPath, factory, name, scale);
+                return LoadDragonBonesDataBinary(fillpath, factory, name, scale);
             }
             else
             {
-                throw new FileNotFoundException($"DragonBones data file not found. Tried paths: {string.Join(", ", possiblePaths)}");
+                throw new NotSupportedException($"Unsupported file extension for DragonBones data: {extension}. Supported extensions are .json and .dbbin");
             }
         }
-
+        public static DragonBonesData LoadDragonBonesData(ContentManager content, string filePath, bool IsJsonFile, MonoGameFactory factory, string name = null, float scale = 1.0f)
+        {
+            string fillpath = Path.Combine(content.RootDirectory, filePath);
+            if (!File.Exists(fillpath))
+            {
+                throw new FileNotFoundException($"DragonBones data file not found: {filePath}");
+            }
+            string extension = Path.GetExtension(filePath).ToLower();
+            if (IsJsonFile)
+            {
+                return LoadDragonBonesDataJson(fillpath, factory, name, scale);
+            }
+            else
+            {
+                return LoadDragonBonesDataBinary(fillpath, factory, name, scale);
+            }
+        }
         private static DragonBonesData LoadDragonBonesDataJson(string fullPath, MonoGameFactory factory, string name, float scale)
         {
             string jsonContent = File.ReadAllText(fullPath);
-            
             var jsonNode = JsonNode.Parse(jsonContent);
             var rawData = ConvertJsonNode(jsonNode);
-            
             var result = factory.ParseDragonBonesData(rawData, name, scale);
-            
             return result;
         }
 
         private static DragonBonesData LoadDragonBonesDataBinary(string fullPath, MonoGameFactory factory, string name, float scale)
         {
-            if (!File.Exists(fullPath))
-            {
-                throw new FileNotFoundException($"DragonBones binary data file not found: {fullPath}");
-            }
-            
             byte[] binaryData = File.ReadAllBytes(fullPath);
-            
             var result = factory.ParseDragonBonesData(binaryData, name, scale);
-            
             return result;
         }
 
-        public static TextureAtlasData LoadTextureAtlasData(ContentManager content, string path, Texture2D texture, MonoGameFactory factory, string name = null, float scale = 1.0f)
+        public static TextureAtlasData LoadTextureAtlasData(ContentManager content, string jsonpath, Texture2D texture, MonoGameFactory factory, string name = null, float scale = 1.0f)
         {
-            string jsonPath = Path.ChangeExtension(path, ".json");
-            List<string> possiblePaths = new List<string>
+            string jsonPath = Path.Combine(content.RootDirectory, jsonpath);
+            if (File.Exists(jsonPath))
             {
-                Path.Combine(content.RootDirectory, jsonPath),
-                Path.Combine(Directory.GetCurrentDirectory(), "Content", jsonPath),
-                Path.Combine(Directory.GetCurrentDirectory(), "..", "Content", jsonPath),
-                Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "Content", jsonPath)
-            };
-
-            // 检查是否存在JSON文件
-            string foundJsonPath = null;
-            foreach (var possiblePath in possiblePaths)
-            {
-                if (File.Exists(possiblePath))
-                {
-                    foundJsonPath = possiblePath;
-                    break;
-                }
-            }
-
-            if (foundJsonPath != null)
-            {
-                string jsonContent = File.ReadAllText(foundJsonPath);
-                
+                string jsonContent = File.ReadAllText(jsonPath);
                 var jsonNode = JsonNode.Parse(jsonContent);
                 var rawData = ConvertJsonNode(jsonNode) as Dictionary<string, object>;
-                
                 var result = factory.ParseTextureAtlasData(rawData, texture, name, scale);
-                
                 return result;
             }
             else
             {
-                throw new FileNotFoundException($"Texture atlas data file not found. Tried paths: {string.Join(", ", possiblePaths)}");
+                throw new FileNotFoundException($"Texture atlas data file not found. Tried paths: {jsonPath}");
             }
         }
 
