@@ -11,19 +11,19 @@ namespace DragonBones.MonoGame
     {
         public static DragonBonesData LoadDragonBonesData(ContentManager content, string filePath, MonoGameFactory factory, string name = null, float scale = 1.0f)
         {
-            string fillpath = Path.Combine(content.RootDirectory, filePath);
-            if (!File.Exists(fillpath))
+            string fullPath = Path.Combine(content.RootDirectory, filePath);
+            if (!File.Exists(fullPath))
             {
                 throw new FileNotFoundException($"DragonBones data file not found: {filePath}");
             }
             string extension = Path.GetExtension(filePath).ToLower();
             if (extension == ".json")
             {
-                return LoadDragonBonesDataJson(fillpath, factory, name, scale);
+                return LoadDragonBonesDataJson(fullPath, factory, name, scale);
             }
             else if (extension == ".dbbin")
             {
-                return LoadDragonBonesDataBinary(fillpath, factory, name, scale);
+                return LoadDragonBonesDataBinary(fullPath, factory, name, scale);
             }
             else
             {
@@ -32,19 +32,18 @@ namespace DragonBones.MonoGame
         }
         public static DragonBonesData LoadDragonBonesData(ContentManager content, string filePath, bool IsJsonFile, MonoGameFactory factory, string name = null, float scale = 1.0f)
         {
-            string fillpath = Path.Combine(content.RootDirectory, filePath);
-            if (!File.Exists(fillpath))
+            string fullPath = Path.Combine(content.RootDirectory, filePath);
+            if (!File.Exists(fullPath))
             {
                 throw new FileNotFoundException($"DragonBones data file not found: {filePath}");
             }
-            string extension = Path.GetExtension(filePath).ToLower();
             if (IsJsonFile)
             {
-                return LoadDragonBonesDataJson(fillpath, factory, name, scale);
+                return LoadDragonBonesDataJson(fullPath, factory, name, scale);
             }
             else
             {
-                return LoadDragonBonesDataBinary(fillpath, factory, name, scale);
+                return LoadDragonBonesDataBinary(fullPath, factory, name, scale);
             }
         }
         private static DragonBonesData LoadDragonBonesDataJson(string fullPath, MonoGameFactory factory, string name, float scale)

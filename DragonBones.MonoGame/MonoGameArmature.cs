@@ -58,6 +58,7 @@ namespace DragonBones.MonoGame
 
         public void Dispose(bool disposeProxy)
         {
+            SpriteBatch = null;
         }
         #endregion
 

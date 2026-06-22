@@ -361,3 +361,10 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Reasonix AI tooling
+.reasonix/
+reasonix.toml
+
+# Example: user-downloaded DragonBones resources
+Example/Content/library/

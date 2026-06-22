@@ -90,7 +90,7 @@ namespace DragonBones.MonoGame
 
         internal override void _UpdateVisible()
         {
-            visible = _parent != null && _parent.visible;
+            _visible = _visible && _parent != null && _parent.visible;
         }
 
         internal override void _UpdateBlendMode()
@@ -101,7 +101,6 @@ namespace DragonBones.MonoGame
         {
             if (!visible || _texture == null || _proxy == null)
             {
-                System.Diagnostics.Debug.WriteLine($"Render skipped: visible={visible}, _texture={_texture != null}, _proxy={_proxy != null}");
                 return;
             }
 
