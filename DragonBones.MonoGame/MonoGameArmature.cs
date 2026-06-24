@@ -7,6 +7,9 @@ namespace DragonBones.MonoGame
 {
     public class MonoGameArmature : Armature, IArmatureProxy
     {
+        private readonly Dictionary<string, List<ListenerDelegate<EventObject>>> _eventListeners =
+            new Dictionary<string, List<ListenerDelegate<EventObject>>>();
+
         public SpriteBatch SpriteBatch { get; set; }
         public Vector2 Position { get; set; }
         public float Rotation { get; set; }
@@ -15,6 +18,7 @@ namespace DragonBones.MonoGame
         protected override void _OnClear()
         {
             base._OnClear();
+            _eventListeners.Clear();
             SpriteBatch = null;
             Position = Vector2.Zero;
             Rotation = 0;
@@ -65,23 +69,49 @@ namespace DragonBones.MonoGame
         #region IEventDispatcher 实现
         public bool HasDBEventListener(string type)
         {
-            return false;
+            return _eventListeners.ContainsKey(type);
         }
 
         public void DispatchDBEvent(string type, EventObject eventObject)
         {
+            if (_eventListeners.TryGetValue(type, out var listeners))
+            {
+                foreach (var listener in listeners)
+                {
+                    listener(type, eventObject);
+                }
+            }
         }
 
         public void AddDBEventListener(string type, ListenerDelegate<EventObject> listener)
         {
+            if (!_eventListeners.TryGetValue(type, out var listeners))
+            {
+                listeners = new List<ListenerDelegate<EventObject>>();
+                _eventListeners[type] = listeners;
+            }
+
+            if (!listeners.Contains(listener))
+            {
+                listeners.Add(listener);
+            }
         }
 
         public void RemoveDBEventListener(string type, ListenerDelegate<EventObject> listener)
         {
+            if (_eventListeners.TryGetValue(type, out var listeners))
+            {
+                listeners.Remove(listener);
+                if (listeners.Count == 0)
+                {
+                    _eventListeners.Remove(type);
+                }
+            }
         }
 
         public void ClearDBEventListeners()
         {
+            _eventListeners.Clear();
         }
         #endregion
     }

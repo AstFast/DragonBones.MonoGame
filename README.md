@@ -18,4 +18,9 @@ Don't forget runtime.[It](https://github.com/AstFast/DragonBonesCSharp.git).
 
 ### Note
 
-This project utilizes AI
+> ⚠️ **AI-GENERATED CODE DISCLAIMER**
+>
+> This project's source code is generated entirely by artificial intelligence (AI).
+> It may contain errors, security vulnerabilities, or non-standard practices.
+> Use at your own risk. Not intended for production environments.
+> No human review or warranty is provided.

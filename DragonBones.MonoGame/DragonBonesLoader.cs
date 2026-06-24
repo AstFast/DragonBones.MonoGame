@@ -30,22 +30,7 @@ namespace DragonBones.MonoGame
                 throw new NotSupportedException($"Unsupported file extension for DragonBones data: {extension}. Supported extensions are .json and .dbbin");
             }
         }
-        public static DragonBonesData LoadDragonBonesData(ContentManager content, string filePath, bool IsJsonFile, MonoGameFactory factory, string name = null, float scale = 1.0f)
-        {
-            string fullPath = Path.Combine(content.RootDirectory, filePath);
-            if (!File.Exists(fullPath))
-            {
-                throw new FileNotFoundException($"DragonBones data file not found: {filePath}");
-            }
-            if (IsJsonFile)
-            {
-                return LoadDragonBonesDataJson(fullPath, factory, name, scale);
-            }
-            else
-            {
-                return LoadDragonBonesDataBinary(fullPath, factory, name, scale);
-            }
-        }
+
         private static DragonBonesData LoadDragonBonesDataJson(string fullPath, MonoGameFactory factory, string name, float scale)
         {
             string jsonContent = File.ReadAllText(fullPath);

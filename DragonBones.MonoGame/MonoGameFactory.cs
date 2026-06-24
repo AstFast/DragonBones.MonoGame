@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using DragonBones;
 
@@ -7,7 +6,6 @@ namespace DragonBones.MonoGame
     public class MonoGameFactory : BaseFactory
     {
         private readonly GraphicsDevice _graphicsDevice;
-        private readonly Dictionary<Texture2D, Texture2D> _textureCache = new Dictionary<Texture2D, Texture2D>();
 
         public MonoGameFactory(GraphicsDevice graphicsDevice, DataParser dataParser = null) : base(dataParser)
         {
@@ -45,15 +43,6 @@ namespace DragonBones.MonoGame
             var slot = BaseObject.BorrowObject<MonoGameSlot>();
             slot.Init(slotData, armature, slot, slot);
             return slot;
-        }
-
-        public void Dispose()
-        {
-            foreach (var texture in _textureCache.Values)
-            {
-                texture.Dispose();
-            }
-            _textureCache.Clear();
         }
     }
 }
