@@ -136,19 +136,16 @@ namespace DragonBonesMonoGameExample
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            _spriteBatch.Begin();
-            
+            // Armature manages its own SpriteBatch Begin/End internally (blend-mode batching)
             if (_armature != null)
             {
                 _armature.Render();
             }
-            
-            _spriteBatch.End();
 
-            _spriteBatch.Begin();
-            
             if (_animationNames.Count > 0)
             {
+                _spriteBatch.Begin();
+
                 var infoText = $"Animation: {_animationNames[_currentAnimationIndex]} ({_currentAnimationIndex + 1}/{_animationNames.Count})\n";
                 infoText += "Press Left/Right or 1-9 to switch animation\n";
                 infoText += "Available animations:\n";
@@ -157,11 +154,11 @@ namespace DragonBonesMonoGameExample
                     var prefix = i == _currentAnimationIndex ? "> " : "  ";
                     infoText += $"{prefix}{i + 1}. {_animationNames[i]}\n";
                 }
-                
+
                 _spriteBatch.DrawString(_font, infoText, new Vector2(10, 10), Color.White);
+
+                _spriteBatch.End();
             }
-            
-            _spriteBatch.End();
 
             base.Draw(gameTime);
         }
